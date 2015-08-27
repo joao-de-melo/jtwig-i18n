@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk7
+
+env:
+  TERM: dumb
+  global:
+    - secure: J3aBkJsN8mmE28W83R1VZoCI8lC98UrTJ98RF8p/P6UqWRY57dFPzyddy4ZSDMy8/Be7I1UrG5kMh3JqN0hFz8QGSjr/fZzV3BAoHpaIkG7/grpzeodP2xKUol+JblbhWsZ6fRTeeATYrvttViOYnrLMLSFPfl7Mnu71DMtUoaVNw88rux1zHty91S7Tf7yobNQKlHmBYoOTe/zvZIdjIft1yNO60ijIBIh8w05PDh68i+2MswvaXHFElbsI+PxFKWsvZURu+9PglbovN8No9b/33iXBOfzgcpHCqC7PH9asyKMBltLLg9NWQaFSsm3pSAWMhZBIOuQY6fUBL5PSSrOVys3GAxN1ujE8/Zw+Koai/wHMM9oR625fVe4SUiWDy1BhxbFEw3KAnkPSJOQsJvaAYdktsAIyT753vQ4nVX6Y2dVVcNKSkuNUNN/PbOWQjPXAUJVzMLVb41vZRcyjC0UBS7Znua6rSRpny4j9h61M/rh0Uf2r7pBkCY+MHtC3sN2OBrfZ9aP+Zh7ZstTr+0o9SDp0+jkKbpkswckbnj98qlvUceHgY+5TT2zxQ9odH86q1KzZyxAuRa6R72Lg3RSi8kLI5v63UanfJUWjvkWGOsAM13GEZi88BjWJKg3fVP7kU5rGN0ysXQs3V/rT0cQnx2ZIUau+OrxgW2tWPQ=
+
+after_success:
+ - gradle jacocoTestReport coveralls
+ - if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then gradle bintrayUpload ; fi

@@ -1,15 +1,21 @@
 package org.jtwig.i18n.decorate;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ReplacementMessageDecoratorTest {
-    private final ReplacementMessageDecorator.ReplacementProvider replacementProvider = mock(ReplacementMessageDecorator.ReplacementProvider.class);
-    private ReplacementMessageDecorator underTest = new ReplacementMessageDecorator(replacementProvider);
+    private final ArrayList<ReplacementMessageDecorator.Replacement> replacements = new ArrayList<ReplacementMessageDecorator.Replacement>();
+    private ReplacementMessageDecorator underTest = new ReplacementMessageDecorator(replacements);
+
+    @Before
+    public void setUp() throws Exception {
+        replacements.clear();
+    }
 
     @Test
     public void decoratorWithoutArguments() throws Exception {
@@ -20,7 +26,7 @@ public class ReplacementMessageDecoratorTest {
 
     @Test
     public void decoratorWithOneArgument() throws Exception {
-        when(replacementProvider.replacement("name")).thenReturn("World");
+        replacements.add(new ReplacementMessageDecorator.Replacement("%name%", "World"));
 
         String result = underTest.decorate("Hello %name%");
 
@@ -29,7 +35,7 @@ public class ReplacementMessageDecoratorTest {
 
     @Test
     public void decoratorWithDuplicateArgument() throws Exception {
-        when(replacementProvider.replacement("name")).thenReturn("World");
+        replacements.add(new ReplacementMessageDecorator.Replacement("%name%", "World"));
 
         String result = underTest.decorate("Hello %name% and %name%");
 
@@ -38,8 +44,8 @@ public class ReplacementMessageDecoratorTest {
 
     @Test
     public void decoratorWithTwoArguments() throws Exception {
-        when(replacementProvider.replacement("name")).thenReturn("World");
-        when(replacementProvider.replacement("value")).thenReturn("2");
+        replacements.add(new ReplacementMessageDecorator.Replacement("%name%", "World"));
+        replacements.add(new ReplacementMessageDecorator.Replacement("%value%", "2"));
 
         String result = underTest.decorate("Hello %name% and %value%");
 

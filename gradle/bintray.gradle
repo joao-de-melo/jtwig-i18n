@@ -11,7 +11,7 @@ bintray {
         desc = 'Jtwig : Modern Template Engine for Java'
         websiteUrl = 'http://www.jtwig.org'
         issueTrackerUrl = 'https://github.com/jtwig/jtwig-i18n/issues'
-        vcsUrl = 'https://github.com/jtwig/jtwig-reflection.git'
+        vcsUrl = 'https://github.com/jtwig/jtwig-i18n.git'
         licenses = ['Apache-2.0']
         labels = ['java', 'templates', 'jtwig']
         publicDownloadNumbers = true
@@ -19,7 +19,7 @@ bintray {
         version {
             name = 'jtwig-i18n-' + project.version
             desc = 'Jtwig : Modern Template Engine for Java'
-            vcsTag = "jtwig-reflections-" + project.version
+            vcsTag = "jtwig-i18n-" + project.version
         }
     }
 }

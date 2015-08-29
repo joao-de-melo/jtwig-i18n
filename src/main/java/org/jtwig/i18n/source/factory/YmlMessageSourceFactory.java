@@ -13,7 +13,13 @@ public class YmlMessageSourceFactory {
     public static MessageSource create (InputStream inputStream) {
         Object load = yaml.load(inputStream);
         if (load instanceof Map) {
-            return new MapMessageSource((Map<String, String>) load);
+            Map loaded = (Map) load;
+            for (Object value : loaded.values()) {
+                if (!(value instanceof String)) {
+                    throw new IllegalArgumentException("Yaml file provided is not a list of key pair values");
+                }
+            }
+            return new MapMessageSource(loaded);
         }
         throw new IllegalArgumentException("Yaml file provided is not a list of key pair values");
     }

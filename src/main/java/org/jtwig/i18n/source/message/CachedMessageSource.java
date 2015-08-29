@@ -7,10 +7,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 public class CachedMessageSource implements MessageSource {
-    private final Cache<String, String> cache;
+    private final Cache<String, Optional<String>> cache;
     private final MessageSource messageSource;
 
-    public CachedMessageSource(Cache<String, String> cache, MessageSource messageSource) {
+    public CachedMessageSource(Cache<String, Optional<String>> cache, MessageSource messageSource) {
         this.cache = cache;
         this.messageSource = messageSource;
     }
@@ -18,14 +18,12 @@ public class CachedMessageSource implements MessageSource {
     @Override
     public Optional<String> message(final String message) {
         try {
-            return Optional.fromNullable(
-                    cache.get(message, new Callable<String>() {
-                        @Override
-                        public String call() throws Exception {
-                            return messageSource.message(message).orNull();
-                        }
-                    })
-            );
+            return cache.get(message, new Callable<Optional<String>>() {
+                @Override
+                public Optional<String> call() throws Exception {
+                    return messageSource.message(message);
+                }
+            });
         } catch (ExecutionException e) {
             return Optional.absent();
         }
